@@ -21,9 +21,7 @@ def index():
 
 @app.route('/clientes', methods=['GET'])
 def get_clientes():
-    #clientes = Cliente.query.join(Endereco, Cliente.endereco_id == Endereco.id).all()
     clientes = Cliente.query.all()
-    #clientes = Cliente.query.join(Endereco, Cliente.endereco_id == Endereco.id).add_columns(Endereco.rua).all()
     print(clientes)
     return jsonify([i.serialize() for i in clientes])
 

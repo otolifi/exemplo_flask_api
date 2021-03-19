@@ -29,8 +29,6 @@ class Endereco(db.Model):
     cidade = db.Column(db.String(45), nullable=False)
     uf = db.Column(db.String(2), nullable=False)
 
-    #clientes = db.relationship('Cliente', backref='endereco')
-
     def __repr__(self):
         return f'<Endereco {self.rua}>'
 
