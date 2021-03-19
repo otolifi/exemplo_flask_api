@@ -1,0 +1,47 @@
+flask db init
+flask db migrate -m "inicial"
+flask db upgrade
+
+
+
+'''
+class Telefone(db.Model):
+    __tablename__ = 'telefones'
+    id = db.Column(db.Integer, primary_key=True)
+    telefone = db.Column(db.String(11), nullable=False)
+
+    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'), nullable=False)
+    clientes = db.relationship('Cliente', backref=db.backref('telefone'), lazy=True)
+
+    def __repr__(self):
+        return f'<Telefone {self.telefone}>'
+
+
+class Pet(db.Model):
+    __tablename__ = 'pets'
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(45), nullable=False)
+    raca = db.Column(db.String(45), nullable=False)
+    porte = db.Column(db.String(10), nullable=False)
+    genero = db.Column(db.String(2), nullable=False)
+    especie = db.Column(db.String(15), nullable=False)
+
+    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'), nullable=False)
+    clientes = db.relationship('Pet', backref=db.backref('cliente'), lazy=True)
+
+    def __repr__(self):
+        return f'<Pet {self.nome}>'
+
+
+class PetHasCliente(db.Model):
+    __tablename__ = 'pet_has_cliente'
+    id = db.Column(db.Integer, primary_key=True)
+    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'), nullable=False)
+    pet_id = db.Column(db.Integer, db.ForeignKey('pets.id'), nullable=False)
+
+    clientes = db.relationship('PetHasCliente', backref=db.backref('cliente'), lazy=True)
+    pets = db.relationship('PetHasCliente', backref=db.backref('pet'), lazy=True)
+
+    def __repr__(self):
+        return f'<PetHasCliente {self.pet_id}>'
+'''
