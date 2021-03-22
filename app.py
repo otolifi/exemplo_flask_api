@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, session
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -47,6 +47,20 @@ def get_enderecos():
     enderecos = Endereco.query.all()
     print(enderecos)
     return jsonify([i.serialize() for i in enderecos])
+
+
+@app.route('/endereco', methods=['POST'])
+def novo_endereco():
+    
+    data = request.get_json()
+    #endereco = Endereco(request.get_json())
+    print(data['rua'])
+    endereco = Endereco(rua=data['rua'], cep=data['cep'], bairro=data['bairro'], cidade=data['cidade'], uf=data['uf'])
+    
+    db.session.add(endereco)
+    db.session.commit()
+
+    return "ok"
 
 
 @app.route('/pets/<id>', methods=['GET'])
