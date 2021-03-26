@@ -26,8 +26,11 @@ def get_clientes():
         lista[str(x.id)] = x.serialize()
         #print('x=', x.nome)
         for pet in x.pets:
-            print('pet=', pet.serialize())
+            qty = Pets_Has_Clientes.query.filter_by(pet_id=pet.id, cliente_id=x.id).first().qty
+            #print(qty)
+            #print('pet=', pet.serialize())
             lista[str(x.id)][str(pet.id)] = pet.serialize()
+            lista[str(x.id)][str(pet.id)]['qty'] = qty
     #print(lista)
     return lista
 
