@@ -11,15 +11,18 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from models.Clientes import Cliente, Endereco, Telefone, Pet, pets_has_clientes
+from models.Clientes import Cliente, Endereco, Telefone, Pet, Pets_Has_Clientes
 
 
 @app.route('/clientes')
 def get_clientes():
     lista = dict()
-    result = Cliente.query.join(pets_has_clientes).all()
+    result = Cliente.query.join(Pets_Has_Clientes).all()
+    result2 = Pets_Has_Clientes.query.all()
+    print(result2[0])
     #print(result)
     for x in result:
+        print(x)
         lista[str(x.id)] = x.serialize()
         #print('x=', x.nome)
         for pet in x.pets:

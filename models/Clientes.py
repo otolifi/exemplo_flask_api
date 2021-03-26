@@ -13,8 +13,9 @@ class Cliente(db.Model):
     endereco_id = db.Column(db.Integer, db.ForeignKey('enderecos.id'), nullable=False)
     telefone = db.relationship('Telefone')
     telefone_id = db.Column(db.Integer, db.ForeignKey('telefones.id'), nullable=False)
+    pets = db.relationship('Pet', secondary='pets_has_clientes')
     
-    pets = db.relationship('Pet', secondary='pets_has_clientes', backref='clientes')
+    '''pets = db.relationship('Pet', secondary='pets_has_clientes', backref='clientes', lazy='dynamic')'''
     '''pets = db.relationship('Pet', secondary='pets_has_clientes', lazy='subquery', backref=db.backref('clientes', lazy=True))'''
     '''pets = db.relationship('Pet', secondary='pets_has_clientes', lazy='subquery', backref=db.backref('clientes', lazy=True))'''
 
@@ -37,9 +38,8 @@ class Pet(db.Model):
     porte = db.Column(db.String(10), nullable=False)
     genero = db.Column(db.String(1), nullable=False)
     especie = db.Column(db.String(15), nullable=False)
-
-
-    #clientes = db.relationship('Cliente', secondary='pets_has_clientes', backref='pets')
+    
+    clientes = db.relationship('Cliente', secondary='pets_has_clientes')
     '''
     clientes = db.relationship('Cliente', secondary='pets_has_clientes', lazy='subquery',
         backref=db.backref('pets', lazy=True))'''
@@ -54,11 +54,24 @@ class Pet(db.Model):
     
     
 
-
+'''
 pets_has_clientes = db.Table('pets_has_clientes',
     db.Column('cliente_id', db.Integer, db.ForeignKey('clientes.id'), primary_key=True),
-    db.Column('pet_id', db.Integer, db.ForeignKey('pets.id'), primary_key=True)
-)
+    db.Column('pet_id', db.Integer, db.ForeignKey('pets.id'), primary_key=True),
+    db.Column('qty', db.Integer)
+)'''
+
+class Pets_Has_Clientes(db.Model):
+    __tablename__ = 'pets_has_clientes'
+    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'), primary_key=True)
+    pet_id = db.Column(db.Integer, db.ForeignKey('pets.id'), primary_key=True)
+    qty = db.Column(db.Integer)
+    
+    def serialize(self):
+        return {"cliente_id": self.cliente_id,
+                "pet_id": self.pet_id,
+                "qty": self.qty
+                }
 
 class Endereco(db.Model):
     __tablename__ = 'enderecos'
