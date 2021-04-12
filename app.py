@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, render_template
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -37,7 +37,7 @@ def get_clientes():
 
 @app.route('/')
 def index():
-    return 'Ola, mundo'
+    return render_template('index.html')
 
 '''
 @app.route('/clientes', methods=['GET'])
